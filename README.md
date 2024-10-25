@@ -28,7 +28,7 @@ Steps to pushing your local code updates to the remote feature branch
 
 	2. CD to your working directory to make sure you cover all files you updated
  
-	3. To track any new files you created don't forget to type "git add ." (DO NOT DO THIS IF YOU HAVE API KEYS SAVED LOCALLY.  This will make your secrets public.)
+	3. To track any new files you created don't forget to type "git add ." (DO NOT DO THIS IF YOU HAVE API KEYS SAVED LOCALLY.  This will make your secrets public. Use .gitignore and/or only git add individual files.)
  
 	4. To commit changes to queue for upload type "git commit -am "Changes description""
  
