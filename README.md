@@ -32,7 +32,7 @@ Steps to pushing your local code updates to the remote feature branch
  
 	4. To commit changes to queue for upload type "git commit -am "Changes description""
  
-	5. Once you want to back up the cloud, push with "git push origin feature/my-feature" 
+	5. Once you want to back up the cloud, push with "git push origin feature/my-feature" (or just git push if you already used -u)
 
 
 Steps to merging your remote feature branch with remote main repository once your code is finished & pushed to remote
