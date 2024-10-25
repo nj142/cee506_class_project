@@ -18,7 +18,7 @@ Steps to creating a new feature branch
  
 	2. Type "git checkout -b feature/your-new-branch-name" to create a new branch on your local repository
  
-	3. Type "git push -u origin feature/your-new-branch-name" to update the remote repository with a copy of your new branch
+	3. Type "git push -u origin feature/your-new-branch-name" to update the remote repository with a copy of your new branch.  The -u means you can just use push and pull instead of having to type out the feature branch every time.
  
 	
 Steps to pushing your local code updates to the remote feature branch
