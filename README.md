@@ -39,4 +39,6 @@ Steps to merging your remote feature branch with remote main repository once you
 
 	1. Don't push to main!  Instead, once you are ready to merge your code files, you can go to GitHub on a browser to create a pull request. (Pull requests are a different feature than the Git pull command, which just updates your local repository to match the remote-- instaed, a pull request is how you submit your code branch for review to merge to the main.)
 
-	2. Once that merge is reviewed by the team and approved by the merge master, the merge master then can use git merge to combine your remote branch to the remote main.  Then you can delete the old branch from your local and remote repositories-- it has been merged to the main and is now part of the shared program. Delete your merged branch using: "git branch -d feature/my-feature" and then "git push origin --delete feature/my-feature"
+	2. Once that merge is reviewed by the team and approved by the merge master, the merge master then can use git merge to combine your remote branch to the remote main.  Then you can delete the old branch from your local and remote repositories-- it has been merged to the main and is now part of the shared program. 
+ 	
+  	3. Delete your LOCAL branch after the pull request has been approved & the remote branch has been merged using: "git reset --hard origin/main" then "git branch -d feature/my-feature"
