@@ -18,10 +18,10 @@
 	4. Login with your Git username (e.g. nj142) and copy over your personal access token as your password
 
 
-3 # Steps to pushing your local code updates to the remote feature branch
+3 # Steps to pushing your local code updates to your remote feature branch
 (Note it is good practice to run git commit every time you finish a working function or code block-- around every 20 minutes or so.  You only really need to push to your remote branch at the end of each programming session.)
 
-	1. Git checkout to your feature branch to make sure you don't accidentally update the main branch
+	1. Git checkout to your local feature branch
 
 	2. CD to your working directory to make sure you cover all files you updated
  
