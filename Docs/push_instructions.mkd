@@ -1,12 +1,12 @@
 
-1 # Steps to linking your local notebook to the remote github branch
+ ### 1: Steps to linking your local notebook to the remote github branch 
 
 	1. Change directory using CD in your local terminal to an empty folder on your computer/docker (e.g. new folder called ESDA_project in Jupyter)
 
 	2. Type "git clone https://github.com/nj142/cee506_class_project" to download & track the main branch of the remote repository
 
 
-2 # Steps to creating a new local branch & linking it to a new corresponding remote branch
+ ### 2: Steps to creating a new local branch & linking it to a new corresponding remote branch
 (You cannot edit or push to the main branch unless you are the merge master, so this branch is where you will upload all your changes while programming.)
 
 	1. CD to cee506_class_project in your local commandline terminal (if you aren't already there)
@@ -18,7 +18,7 @@
 	4. Login with your Git username (e.g. nj142) and copy over your personal access token as your password
 
 
-3 # Steps to pushing your local code updates to your remote feature branch
+ ### 3: Steps to pushing your local code updates to your remote feature branch
 (Note it is good practice to run git commit every time you finish a working function or code block-- around every 20 minutes or so.  You only really need to push to your remote branch at the end of each programming session.)
 
 	1. Git checkout to your local feature branch (if you aren't already checked out there)
@@ -32,7 +32,7 @@
 	5. Once you want to back up the cloud, push with "git push origin feature/your-feature-name"
 
 
-4 # Steps to merging your remote feature branch with remote main repository once your code is finished 
+### 4: Steps to merging your remote feature branch with remote main repository once your code is finished 
 
 	1. Push all your final local changes to your remote feature branch.  
 
@@ -43,7 +43,7 @@
   	3. Finally, delete your local copy of the merged branch after the pull request has been approved & the remote branch has been merged using: "git reset --hard origin/main" then "git branch -d feature/your-feature-name"
 
 
-(OPTIONAL) # Steps to pulling updates from a remote branch to update your local copy of that branch (Use if you updated your remote branch from another computer, or if you want to pull the most recent changes from remote main to experiment with merging to main on your own computer.)
+### (OPTIONAL): Steps to pulling updates from a remote branch to update your local copy of that branch (Use if you updated your remote branch from another computer, or if you want to pull the most recent changes from remote main to experiment with merging to main on your own computer.)
 
     A - IF YOU DO NOT HAVE LOCAL CHANGES YOU WANT TO SAVE:
 
@@ -61,7 +61,7 @@
             (You will have to go in file by file and choose which changes to keep.  It may be helpful to do this in VSCODE since doing it in terminal can be a pain.)
 
 
-(OPTIONAL) # Steps to downloading a pre-existing remote branch (use if you work on your code from a new machine or want to test out others' code)
+### (OPTIONAL): Steps to downloading a pre-existing remote branch (use if you work on your code from a new machine or want to test out others' code)
 
 	1. Type "git fetch" to make sure your local repository is updated to recognize all new branches
 	
