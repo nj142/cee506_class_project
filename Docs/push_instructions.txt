@@ -50,12 +50,12 @@
         2. Type "git reset --hard origin/your-branch-name" to re-clone the remote branch locally
             
     B - IF YOU HAVE LOCAL CHANGES YOU WANT TO MERGE WITH YOUR REMOTE PULL:
-        
-        1. Type "git fetch origin" to download changes
 
-		2. Commit your local changes so they are saved before merging
-             
-        3. Type "git pull origin your-branch-name" to download changes & resolve merge conflicts manually.
+	1. Type "git fetch origin" to download changes
+
+	2. Commit your local changes so they are saved before merging
+
+	3. Type "git pull origin your-branch-name" to download changes & resolve merge conflicts manually.
             (You will have to go in file by file and choose which changes to keep.  It may be helpful to do this in VSCODE since doing it in terminal can be a pain.)
 
 
