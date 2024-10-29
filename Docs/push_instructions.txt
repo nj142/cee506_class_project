@@ -23,7 +23,7 @@
 
 	1. Git checkout to your local feature branch
 
-	2. CD to your working directory to make sure you cover all files you updated
+	2. CD to cee506_class_project in your local commandline terminal (if you aren't already there)
  
 	3. To track any new files you created don't forget to type "git add ." (DO NOT DO THIS IF YOU HAVE API KEYS SAVED LOCALLY.  This will make your secrets public. Use .gitignore and/or only git add individual files.)
  
