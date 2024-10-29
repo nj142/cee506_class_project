@@ -43,4 +43,4 @@ Steps to merging your remote feature branch with remote main repository once you
 
 	2. Once that merge is reviewed by the team and approved by the merge master, the merge master then can use git merge to combine your remote branch to the remote main & delete the remote branch.
  	
-  	3. Tou can delete your local copy of the merged branch after the pull request has been approved & the remote branch has been merged using: "git reset --hard origin/main" then "git branch -d feature/my-feature"
+  	3. You can delete your local copy of the merged branch after the pull request has been approved & the remote branch has been merged using: "git reset --hard origin/main" then "git branch -d feature/my-feature"
