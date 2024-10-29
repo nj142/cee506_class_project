@@ -39,3 +39,10 @@ Steps to merging your remote feature branch with remote main repository once you
 	2. Once that merge is reviewed by the team and approved by the merge master, the merge master then can use git merge to combine your remote branch to the remote main & delete the remote branch.
  	
   	3. You can delete your local copy of the merged branch after the pull request has been approved & the remote branch has been merged using: "git reset --hard origin/main" then "git branch -d feature/my-feature"
+
+
+(OPTIONAL) # Steps to pulling updates from a remote branch to update your local repository (Use if you updated your remote branch from another computer, or if you want to pull the most recent changes from remote main.)
+
+    1. Type "git checkout remote-branch-name" to switch to your local copy of the branch
+    
+    2. Type "git pull origin remote-branch-name" to download any updates from the main branch & automatically merge those updates.
