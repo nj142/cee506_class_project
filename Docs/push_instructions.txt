@@ -44,10 +44,10 @@
 (OPTIONAL) # Steps to pulling updates from a remote branch to update your local repository (Use if you updated your remote branch from another computer, or if you want to pull the most recent changes from remote main.)
 
     A - IF YOU DO NOT HAVE LOCAL CHANGES YOU WANT TO SAVE:
-            
-        1. Type "git fetch origin" to download changes
-            
-        2. Type "git reset --hard origin/your-branch-name" to re-clone the remote branch locally
+
+		1. Type "git fetch origin" to download changes
+
+		2. Type "git reset --hard origin/your-branch-name" to re-clone the remote branch locally
             
     B - IF YOU HAVE LOCAL CHANGES YOU WANT TO MERGE WITH YOUR REMOTE PULL:
 
