@@ -43,7 +43,7 @@
 
 (OPTIONAL) # Steps to pulling updates from a remote branch to update your local repository (Use if you updated your remote branch from another computer, or if you want to pull the most recent changes from remote main.)
 
-    1. Type "git checkout remote-branch-name" to switch to your local copy of the branch
+    1. Type "git checkout remote-branch-name" to switch to your local copy of the branch.  This will also create a new local branch if it does not exist already.
     
     2. Type "git pull origin remote-branch-name" to download any updates from the remote branch & automatically merge those updates.
 
