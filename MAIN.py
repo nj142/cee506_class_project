@@ -5,7 +5,7 @@ import os
 # Add the parent directory to PYTHONPATH
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from cee506_class_project.Scripts.ao_indices import ReturnAOFetch
+from cee506_class_project.Scripts.download_ao_indices import ReturnAOFetch
 from cee506_class_project.Scripts.enso_indices import ReturnENSOFetch
 from cee506_class_project.Scripts.sea_ice_indices import CalculateIceIndex
 
