@@ -20,8 +20,8 @@ years_of_data = list(range(2000, 2023))
 
 # Pull in ENSO data as dictionary of Datetime:Values on a MONTHLY scale from all years of data
 # Format of this dictionary should go from march of year-1 to march of year (e.g. year 2000 is dictionary M1999-M2000) for each year
-#enso_data_filepath = "../Data/ENSO_index.rtf"
-#enso_indices = ReturnENSOFetch(years_of_data, enso_data_filepath)
+enso_data_filepath = "cee506_class_project/Data/ENSO_index.rtf"
+enso_indices = ReturnENSOFetch(years_of_data, enso_data_filepath)
 
 # Pull in AO data as dictionary of Datetime:Values on a MONTHLY scale from all years of data
 # Format of this dictionary should go from march of year-1 to march of year (e.g. year 2000 is dictionary M1999-M2000) for each year
