@@ -6,7 +6,7 @@
 	2. Type "git clone https://github.com/nj142/cee506_class_project" to download & track the main branch of the remote repository
 
 
- ### 2: Steps to creating a new local branch & linking it to a new corresponding remote branch
+ ### 2: Steps to creating a new local branch & corresponding remote branch
 (You cannot edit or push to the main branch unless you are the merge master, so this branch is where you will upload all your changes while programming.)
 
 	1. CD to cee506_class_project in your local commandline terminal (if you aren't already there)
