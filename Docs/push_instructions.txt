@@ -45,9 +45,9 @@
 
     A - IF YOU DO NOT HAVE LOCAL CHANGES YOU WANT TO SAVE:
             
-            1. Type "git fetch origin" to download changes
+        1. Type "git fetch origin" to download changes
             
-            2. Type "git reset --hard origin/your-branch-name" to re-clone the remote branch locally
+        2. Type "git reset --hard origin/your-branch-name" to re-clone the remote branch locally
             
     B - IF YOU HAVE LOCAL CHANGES YOU WANT TO MERGE WITH YOUR REMOTE PULL:
         
