@@ -43,7 +43,7 @@
   	3. Finally, delete your local copy of the merged branch after the pull request has been approved & the remote branch has been merged using: "git reset --hard origin/main" then "git branch -d feature/your-feature-name"
 
 
-(OPTIONAL) # Steps to pulling updates from a remote branch to update your local repository (Use if you updated your remote branch from another computer, or if you want to pull the most recent changes from remote main.)
+(OPTIONAL) # Steps to pulling updates from a remote branch to update your local copy of that branch (Use if you updated your remote branch from another computer, or if you want to pull the most recent changes from remote main to experiment with merging to main on your own computer.)
 
     A - IF YOU DO NOT HAVE LOCAL CHANGES YOU WANT TO SAVE:
 
