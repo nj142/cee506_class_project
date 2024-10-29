@@ -62,7 +62,7 @@
 (OPTIONAL) # Steps to downloading a pre-existing remote branch (use if you work on your code from a new machine or want to test out others' code)
 
 	1. Type "git fetch" to make sure your local repository is updated to recognize all new branches
-
+	
 	2. Type "git branch -a" to list ALL branches (both local (shown in green) and remote (red))
 
 	3. Type "git checkout origin/feature/remote-branch-name" to create & track a copy of that branch on your local machine
