@@ -52,7 +52,7 @@
     B - IF YOU HAVE LOCAL CHANGES YOU WANT TO MERGE WITH YOUR REMOTE PULL:
         
             1. Type "git fetch origin" to download changes
-
+			
 			2. Commit your local changes so they are saved before merging
              
             2. Type "git pull origin your-branch-name" to download changes & resolve merge conflicts manually.
