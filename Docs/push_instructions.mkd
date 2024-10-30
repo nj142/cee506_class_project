@@ -1,6 +1,6 @@
 # Introduction to Git
 
-The most important thing to understand when learning how to use GitHub is the difference between **Remote** and **Local** branches. 
+The most confusing thing for me was learning the mechanics of the difference between **Remote** and **Local** branches. 
 
 A branch is just a copy of our project as it existed in some point in time. (see graphic below.)  
 
