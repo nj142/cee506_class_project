@@ -65,7 +65,7 @@ Note you will **not** have all branches from our project saved as local branches
 
 # Merging a finished feature branch
  ### 1: Back up your code as usual
-	1. Push all your final local changes to your remote feature branch as a backup in case merging with main messses up your code.
+	1. Push all your final local changes to your remote feature branch as a backup.
 
  ### 2: (OPTIONAL, but will save the merge master work) Test main integration using your LOCAL main branch
 	1. Type "git checkout main" to switch to your local main branch
