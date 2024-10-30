@@ -15,21 +15,21 @@ Note you will **not** have all branches from our project saved as local branches
 ***
 
 # Initial setup
-## 1: Link your local machine to our project's remote GitHub repository
+### 1: Link your local machine to our project's remote GitHub repository
 
 	1. Using the CD command in your local terminal, change directory to an empty folder on your computer/docker (e.g. new folder called ESDA_project in our Jupyter environment)
 
 	2. Type "git clone https://github.com/nj142/cee506_class_project" to download & track the main branch of the remote repository.   **You now have a copy of the remote main branch!**
 
 
-## 2: Copy your new local main branch to create an identical (but separate) new local "feature" branch
+### 2: Copy your new local main branch to create an identical (but separate) new local "feature" branch
 (You cannot push to the remote main unless you are the merge master, so this new "feature" branch is where you will save all your changes while programming. You can make changes to your local main if you want to test your code, but these changes can **not** be uploaded-- **only changes you make to your local feature branch can be pushed**.)
 
 	1. CD to the downloaded cee506_class_project folder on your local commandline terminal (if you aren't already there)
  
 	2. Type "git checkout -b feature/your-new-branch-name" to create a new branch on your local repository.  This command will copy over all the files from your local main to make a new local feature branch.
 
- ## 3: Backup your local "feature" branch to the remote repository
+ ### 3: Backup your local "feature" branch to the remote repository
  (Your remote feature branch serves as a cloud backup of your local branch, so everyone can see your code as it progresses.)
  
 	1. Type "git push origin feature/your-new-branch-name" to copy your new branch to the remote repo. The **Origin** keyword tells the computer that you want to make changes to the remote branch.
@@ -40,10 +40,10 @@ Note you will **not** have all branches from our project saved as local branches
 
 
 # Programming workflow
- ## 1: Write code on your local feature branch
+ ### 1: Write code on your local feature branch
  	1. You can code on your local feature branch pretty much however you want-- write files, edit files, delete files. 
   
- ## 2: After every session, back up your changes to the corresponding remote branch
+ ### 2: After every session, back up your changes to the corresponding remote branch
 (Note it is good practice to run git commit every time you finish a working function or code block-- around every 20 minutes or so.  But you only need to push to your remote branch at the end of each programming session.)
 
 	1. Git checkout to your local feature branch (if you aren't already checked out there)
@@ -57,11 +57,11 @@ Note you will **not** have all branches from our project saved as local branches
 	5. Once you want to back up the cloud, push with "git push origin feature/your-feature-name"
 
 
-# ONCE YOUR CODE IS FINISHED
- ## 1: Back up your code as usual
+# Merging a finished feature branch
+ ### 1: Back up your code as usual
 	1. Push all your final local changes to your remote feature branch as a backup in case merging with main messses up your code.
 
- ## 2: (OPTIONAL, but will save the merge master work) Test main integration using your LOCAL main branch
+ ### 2: (OPTIONAL, but will save the merge master work) Test main integration using your LOCAL main branch
 	1. Type "git checkout main" to switch to your local main branch
 
  	2. Type "git fetch origin" to make sure your main is up to date.
@@ -74,7 +74,7 @@ Note you will **not** have all branches from our project saved as local branches
 
    	6. Once your code is running properly on the local MAIN.ipynb, type "git push origin feature/your-feature-name" to replace your remote branch with your code integrated with main.
 
- ## 3: Create a PULL REQUEST to incorporate your changes into main
+ ### 3: Create a PULL REQUEST to incorporate your changes into main
  
 	1. Go to GitHub on a browser to create a pull request. (Pull requests are a different feature than the Git pull command, which just updates your local repository to match the remote-- instead, a pull request is how you submit your code branch for review to merge to the main.)
 
@@ -86,7 +86,8 @@ Note you will **not** have all branches from our project saved as local branches
 
 # Testing integration & switching between computers
 
-## 1: Steps to pulling updates from a remote branch to update your local copy of that branch (Use if you updated your remote branch from another computer, or if you want to pull the most recent changes from remote main to experiment with merging to main on your own computer.)
+### 1: Steps to pulling updates from a remote branch to update your local copy of that branch 
+(Use if you updated your remote branch from another computer, or if you want to pull the most recent changes from remote main to experiment with merging to main on your own computer.)
 
     A - IF YOU DO NOT HAVE LOCAL CHANGES YOU WANT TO SAVE:
 
@@ -104,7 +105,8 @@ Note you will **not** have all branches from our project saved as local branches
             (You will have to go in file by file and choose which changes to keep.  It may be helpful to do this in VSCODE since doing it in Jupyter's terminal can be a pain.)
 
 
-## 2: Steps to downloading a pre-existing remote branch (use if you work on your code from a new machine or want to test out others' code)
+### 2: Steps to downloading a pre-existing remote branch 
+(Use if you work on your code from a new machine or want to test out others' code.)
 
 	1. Type "git fetch" to make sure your local repository is updated to recognize all new branches
 	
