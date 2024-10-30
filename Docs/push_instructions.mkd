@@ -2,7 +2,7 @@
 
 The most important thing to understand when learning how to use GitHub is the difference between **Remote** and **Local** branches. 
 
-A branch is just a copy of our project as it existed in some point in time.  We create branches so that we can each make independent edits to our project without causing conflicts. These will be merged into the main branch once they are done. (see graphic below.)  
+A branch is just a copy of our project as it existed in some point in time. (see graphic below.)  
 
 <img src="https://www.nobledesktop.com/image/gitresources/git-branches-merge.png" alt="drawing" width="400"/>
 
@@ -11,6 +11,8 @@ A branch is just a copy of our project as it existed in some point in time.  We 
 **Local branches**, on the other hand, are the copies of these remote branches on our own machines/dockers.  These are where we can run & test code.  We have to **git commit** all our local changes into a queue to be uploaded, and then **git push** all those commits for them to actually be copied to the remote repository.  
 
 Note you will **not** have all branches from our project saved as local branches-- just the ones you are working on! 
+
+&nbsp;  
 
 ***
 
@@ -36,8 +38,9 @@ Note you will **not** have all branches from our project saved as local branches
 
 	2. Login with your Git username (e.g. nj142) and copy over your personal access token as your password
 
-***
+&nbsp;  
 
+***
 
 # Programming workflow
  ### 1: Write code on your local feature branch
@@ -56,6 +59,9 @@ Note you will **not** have all branches from our project saved as local branches
  
 	5. Once you want to back up the cloud, push with "git push origin feature/your-feature-name"
 
+&nbsp;  
+
+***
 
 # Merging a finished feature branch
  ### 1: Back up your code as usual
@@ -82,7 +88,9 @@ Note you will **not** have all branches from our project saved as local branches
  	
   	3. Finally, delete your local copy of the merged branch after the pull request has been approved & the remote branch has been merged using: "git reset --hard origin/main" then "git branch -d feature/your-feature-name"
 
-***
+&nbsp;  
+
+*** 
 
 # Testing integration & switching between computers
 
