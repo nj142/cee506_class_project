@@ -4,12 +4,10 @@ import datetime as dt
 from datetime import datetime, date
 import pandas as pd
 import matplotlib.dates as mdates
-
-
 import os
 #df_ao = pd.read_csv(r"monthly.ao.txt", sep="\s+") 
 
-def ReturnAOFetch(file_path, years_of_data):
+def ReturnAOFetch(years_of_data, file_path):
     """
     Function that returns AO indices as a dictionary on monthly scale from March of start_year-1 to March end_year
     """
