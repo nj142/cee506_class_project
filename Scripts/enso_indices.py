@@ -4,7 +4,7 @@ import re
 from datetime import datetime
 import json
 
-def ReturnENSOFetch(years_of_data):
+def ReturnENSOFetch(years_of_data, enso_data_filepath):
     rtf_file_path = '/home/jovyan/work/ESDA_project_past/ENSO_index.rtf'
 
     #Open the file
