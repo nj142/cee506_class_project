@@ -5,11 +5,12 @@ import re
 from datetime import datetime
 import json
 
+enso_data_filepath = '/home/jovyan/work/ESDA_project_past/ENSO_index.rtf'
+
 def ReturnENSOFetch(years_of_data, enso_data_filepath):
-    rtf_file_path = '/home/jovyan/work/ESDA_project_past/ENSO_index.rtf'
 
     #Open the file
-    with open(rtf_file_path, 'r', encoding='utf-8') as rtf_file:
+    with open(enso_data_filepath, 'r', encoding='utf-8') as rtf_file:
         rtf_content = rtf_file.read()
 
     #(\d+): A sequence of digits
