@@ -1,42 +1,41 @@
-
-#Added comments
-
 import pandas as pd
-import matplotlib.pyplot as plt
 import re
 from datetime import datetime
-import json
-
-enso_data_filepath = '/home/jovyan/work/ESDA_project_past/ENSO_index.rtf'
 
 def ReturnENSOFetch(years_of_data, enso_data_filepath):
-
-    #Open the file
+    # Open the file
     with open(enso_data_filepath, 'r', encoding='utf-8') as rtf_file:
         rtf_content = rtf_file.read()
-
-    #(\d+): A sequence of digits
-    #\s+: One or more white space
-    #[-+]?: + or - in the beginning
-    #\d*\.\d+: Floating point numbers
-    #\d+: Integer numbers
-    #data = re.findall(r'(\d+)\s+([-+]?\d*\.\d+|\d+)(?:\s+([-+]?\d*\.\d+|\d+))*', rtf_content)
+    
+    # Parse the data from the RTF file
     data = re.findall(r'(\d+)\s+((?:[-+]?\d*\.\d+|\d+)(?:\s+[-+]?\d*\.\d+|\s+\d+)*)', rtf_content)
-    data_processed = [(year, list(map(float, months.split()))) for year, months in data]
-
-    #Extract data
+    
+    # Convert data to a dictionary with years as keys and lists of monthly values
+    data_dict = {int(year): list(map(float, months.split())) for year, months in data}
+    
+    # Create the ENSO index dictionary
     ENSO_index = {}
-
-    #def ReturnENSOFetch(years_of_data):
+    
     for year in years_of_data:
-        #print(year)
+        # Create a list to store ENSO index values for the specific year's context
         ENSO_index_year = []
-        for y, m in [(year - 1, month) for month in range(3, 13)] + [(year, month) for month in range(1, 4)]:
-            value = ENSO_index.get((y, m))
-            if value is not None:
-                date_key = datetime(y, 3, 1)
-                ENSO_index_year.append(value)
-        #print(ENSO_index)
-        #ENSO_index.append(ENSO_index_year)
-        ENSO_index[year] = ENSO_index_year
+        
+        # Find the relevant months for the year's context (previous year's Oct-Dec and current year's Jan-Mar)
+        for y, m in [(year - 1, month) for month in range(10, 13)] + [(year, month) for month in range(1, 4)]:
+            try:
+                # Try to get the index value from the parsed data
+                monthly_data = data_dict.get(y, [])
+                if m <= len(monthly_data):
+                    value = monthly_data[m - 1]
+                    # Create a datetime object for March 1st of the year
+                    date_key = datetime(year, 3, 1)
+                    ENSO_index_year.append(value)
+            except (IndexError, TypeError):
+                # Skip if no data is available for the month
+                continue
+        
+        # Store the list of ENSO index values for the year
+        if ENSO_index_year:
+            ENSO_index[datetime(year, 3, 1)] = ENSO_index_year
+    
     return ENSO_index
