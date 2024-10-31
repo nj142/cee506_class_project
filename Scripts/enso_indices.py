@@ -32,19 +32,15 @@ def ReturnENSOFetch(years_of_data, enso_data_filepath):
     #print(data_dict[(2000, 2)])
 
     #Extract data
-    #Extract data
-ENSO_index = {}
-
-def ReturnENSOFetch(years_of_data):
+    ENSO_index = []
     for year in years_of_data:
         #print(year)
         ENSO_index_year = []
         for y, m in [(year - 1, month) for month in range(3, 13)] + [(year, month) for month in range(1, 4)]:
             value = data_dict.get((y, m))
             if value is not None:
-                date_key = datetime(y, 3, 1)
                 ENSO_index_year.append(value)
         #print(ENSO_index)
-        #ENSO_index.append(ENSO_index_year)
-        ENSO_index[date_key] = ENSO_index_year
+        ENSO_index.append(ENSO_index_year)
+
     return ENSO_index
