@@ -2,10 +2,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import re
 from datetime import datetime
-import json
 
-def ReturnENSOFetch(years_of_data):
-    rtf_file_path = '/home/jovyan/work/ESDA_project_past/ENSO_index.rtf'
+def ReturnENSOFetch(years_of_data, enso_data_filepath):
+    rtf_file_path = enso_data_filepath #'/home/jovyan/work/ESDA_project/ENSO_index.rtf'
 
     #Open the file
     with open(rtf_file_path, 'r', encoding='utf-8') as rtf_file:
@@ -23,16 +22,17 @@ def ReturnENSOFetch(years_of_data):
     #print(data_processed)
 
     #Make a dictionary
-    #data_dict = {}
+    data_dict = {}
 
-    #for year, monthly_data in data_processed:
-    #    for month, value in enumerate(monthly_data, start=1):
-    #        data_dict[(int(year), month)] = value
+    for year, monthly_data in data_processed:
+        for month, value in enumerate(monthly_data, start=1):
+            data_dict[(int(year), month)] = value
+    
     #print(data_dict)
-
     #print(data_dict[(2000, 2)])
 
     #Extract data
+    ENSO_index = []
     for year in years_of_data:
         #print(year)
         ENSO_index_year = []
