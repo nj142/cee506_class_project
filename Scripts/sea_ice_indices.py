@@ -28,7 +28,7 @@ def normalize_value(value, q1, q3, iqr):
 
 def CalculateIceIndex(years_of_data, ice_data_filepath, study_sites):
     """
-    Calculate normalized ice indices for both SLIE and breakup date anomalies.
+    Calculate normalized ice indices for breakup date anomalies.
     
     Parameters:
     years_of_data (list): List of years to analyze
@@ -49,17 +49,13 @@ def CalculateIceIndex(years_of_data, ice_data_filepath, study_sites):
         site_data = dataframe[dataframe['Community'] == site]
         
         # Calculate quartiles for both metrics
-        slie_stats = site_data['SLIE_Anomaly'].describe()
         breakup_stats = site_data['Breakup_Anomaly'].describe()
         
         # Get quartile values for normalization
-        slie_q1 = slie_stats['25%']
-        slie_q3 = slie_stats['75%']
         breakup_q1 = breakup_stats['25%']
         breakup_q3 = breakup_stats['75%']
         
         # Calculate IQR and bounds
-        slie_iqr = slie_q3 - slie_q1
         breakup_iqr = breakup_q3 - breakup_q1
         
         # Process each year's data for this site
@@ -69,20 +65,12 @@ def CalculateIceIndex(years_of_data, ice_data_filepath, study_sites):
             year = int(row['Year'])
             entry_date = datetime(year=year, month=3, day=1)
             
-            # Normalize SLIE anomaly
-            slie_norm = normalize_value(row['SLIE_Anomaly'], 
-                                     slie_q1, slie_q3, slie_iqr)
-            
             # Normalize breakup anomaly
             breakup_norm = normalize_value(row['Breakup_Anomaly'],
                                         breakup_q1, breakup_q3, breakup_iqr)
             
             # Store values in dictionary
             ice_anomaly_dict[site][entry_date] = {
-                'SLIE_anomaly': {
-                    'index': slie_norm,
-                    'actual_km_anomaly': row['SLIE_Anomaly']  # km²
-                },
                 'breakup_anomaly': {
                     'index': breakup_norm,
                     'actual_days_anomaly': row['Breakup_Anomaly']  # days
