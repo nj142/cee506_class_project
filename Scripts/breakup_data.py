@@ -1,3 +1,10 @@
+from datetime import datetime
+import pandas as pd
+import numpy as np
+from statistics import mean
+from typing import Dict, Any
+from datetime import timedelta
+
 def normalize_value(value, mean, std):
     """
     Normalize a value using standardization (z-score method).
@@ -13,6 +20,50 @@ def normalize_value(value, mean, std):
     if std == 0:
         return 0.0
     return (value - mean) / std
+
+
+from datetime import datetime
+from statistics import mean
+from typing import Dict, Any
+
+def calculate_estimated_breakup(breakup_anomaly_data: Dict[int, Dict[str, Any]]) -> datetime:
+    """
+    Calculate a single value of estimated breakup date for this site by taking the mean across all years.
+    
+    Parameters:
+    breakup_anomaly_data (dict): Dictionary of integer years (e.g. 2000) with following data subkeys: 
+                                zscore_index, anomaly_days, breakup_date
+    
+    Returns:
+    datetime.datetime: datetime object representing the mean breakup date for this site
+    
+    Raises:
+    ValueError: If no valid breakup dates are found in the input data
+    TypeError: If breakup_dates are not datetime objects
+    """
+    # Extract all breakup dates
+    breakup_dates = []
+    for year_data in breakup_anomaly_data.values():
+        if 'breakup_date' not in year_data:
+            continue
+            
+        breakup_date = year_data['breakup_date']
+        if not isinstance(breakup_date, datetime):
+            raise TypeError(f"Breakup date must be a datetime object, got {type(breakup_date)}")
+            
+        breakup_dates.append(breakup_date)
+    
+    if not breakup_dates:
+        raise ValueError("No valid breakup dates found in the input data")
+    
+    # Calculate mean month and day directly
+    mean_month = round(mean([date.month for date in breakup_dates]))
+    mean_day = round(mean([date.day for date in breakup_dates]))
+    
+    # Use the first year in the data as reference year
+    reference_year = min(breakup_anomaly_data.keys())
+    
+    return datetime(reference_year, mean_month, mean_day)
 
 def CalculateBreakupData(years_of_data, ice_data_filepath, site_name):
     """

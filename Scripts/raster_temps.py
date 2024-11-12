@@ -1,6 +1,3 @@
-# Two functions, one which calculates mean monthly temps and another which takes all those and calculates anomalies?
+# Calculates mean monthly temps
 def CalculateMeanTemperature():
-    return 
-    
-def CalculateTemperatureAnomaly():
     return 
