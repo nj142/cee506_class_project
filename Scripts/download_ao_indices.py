@@ -1,24 +1,26 @@
 import numpy as np
 import pandas as pd
-from datetime import datetime
+from datetime import datetime, timedelta
+import calendar
 
-def ReturnAOFetch(years_of_data, file_path):
+def ReturnAOFetch(file_path, estimated_breakup_date):
     """
-    Function that returns Arctic Oscillation (AO) indices as a dictionary on monthly scale 
-    from March of year-1 to March of current year for each year in years_of_data.
+    Function that returns Arctic Oscillation (AO) indices for 12 months prior to 
+    estimated breakup date (excluding the breakup month).
     
     Parameters:
     -----------
-    years_of_data : list
-        List of years for which to fetch AO indices
     file_path : str
         Path to the AO index data file
+    estimated_breakup_date : datetime
+        The estimated breakup date
         
     Returns:
     --------
     dict
-        Dictionary with datetime objects as keys (March 1st of each year) and 
-        lists of 13 monthly AO values as values (from March year-1 to March year)
+        Dictionary with datetime key (first day of month before breakup) and 
+        list of dictionaries containing month_name and month_value for the
+        12 months prior to breakup month, in chronological order
     
     Notes:
     ------
@@ -26,9 +28,6 @@ def ReturnAOFetch(years_of_data, file_path):
     Data source: https://www.ncei.noaa.gov/access/monitoring/ao/
     """
     try:
-        # Initialize the dictionary to store results
-        ao_dict = {}
-        
         # Read the data file
         with open(file_path, 'r') as f:
             data_lines = f.readlines()
@@ -48,23 +47,48 @@ def ReturnAOFetch(years_of_data, file_path):
                 date = datetime(year, month, 1)
                 ao_data[date] = ao_value
         
-        # Extract the required date ranges for each year
-        for year in years_of_data:
-            start_date = datetime(year-1, 3, 1)
-            end_date = datetime(year, 3, 1)
+        # Initialize the dictionary to store results
+        ao_dict = {}
+        
+        # Calculate the start date for collecting 12 months of data
+        start_date = estimated_breakup_date.replace(day=1) - timedelta(days=1)  # Go to last day of previous month
+        start_date = start_date.replace(day=1) - timedelta(days=1)  # Go to last day of month before that
+        start_date = start_date.replace(day=1)  # Go to first day of that month
+        start_date = start_date - timedelta(days=(11 * 30))  # Go back 11 more months
+        
+        # Initialize list to store AO values with month information
+        ao_month_data = []
+        
+        # Current date for iteration
+        current_date = start_date
+        
+        # Collect 12 months of data
+        while len(ao_month_data) < 12:
+            try:
+                ao_value = ao_data[current_date]
+                month_info = {
+                    'month_name': calendar.month_name[current_date.month],
+                    'month_value': ao_value
+                }
+            except KeyError:
+                # If no data is available for this date
+                month_info = {
+                    'month_name': calendar.month_name[current_date.month],
+                    'month_value': None
+                }
+                print(f"Warning: Missing data for {current_date.strftime('%B %Y')}")
             
-            # Check if we have all required dates
-            dates_needed = pd.date_range(start=start_date, end=end_date, freq='MS')
-            if not all(date in ao_data for date in dates_needed):
-                print(f"Warning: Missing data for year {year}")
-                continue
+            ao_month_data.append(month_info)
             
-            # Extract the AO indices for this year's range
-            ao_indices = [ao_data[date] for date in dates_needed]
-            
-            # Store in dictionary using March 1st of the current year as key
-            year_datetime = datetime(year, 3, 1)
-            ao_dict[year_datetime] = ao_indices
+            # Move to next month
+            if current_date.month == 12:
+                current_date = current_date.replace(year=current_date.year + 1, month=1)
+            else:
+                current_date = current_date.replace(month=current_date.month + 1)
+        
+        # Store the values with the end date (month before breakup)
+        end_date = estimated_breakup_date.replace(day=1) - timedelta(days=1)
+        ao_dict[end_date] = ao_month_data
         
         return ao_dict
     
@@ -74,17 +98,3 @@ def ReturnAOFetch(years_of_data, file_path):
     except Exception as e:
         print(f"Error processing AO data: {str(e)}")
         return None
-
-# Example usage:
-if __name__ == "__main__":
-    # Test the function
-    test_years = [2000, 2001, 2005]
-    test_file = "monthly.ao.index.txt"
-    
-    ao_data_dict = ReturnAOFetch(test_years, test_file)
-    
-    if ao_data_dict:
-        for year_date, indices in ao_data_dict.items():
-            print(f"\nYear: {year_date.year}")
-            print(f"Number of months: {len(indices)}")
-            print(f"AO indices: {indices}")
