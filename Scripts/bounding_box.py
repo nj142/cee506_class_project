@@ -1,7 +1,7 @@
 import pandas as pd
 from math import radians, cos, sin, asin, sqrt
 
-def CalculateBoundingBox(data_filepath, site_name, radius_km=50):
+def CalculateBoundingBox(data_filepath, site_name, radius_km=100):
     """
     Calculate a bounding box of specified radius around a site's location.
     
