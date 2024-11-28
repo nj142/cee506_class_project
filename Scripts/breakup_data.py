@@ -114,5 +114,5 @@ def CalculateBreakupData(years_of_data, ice_data_filepath, site_name):
             'anomaly_days': row['Breakup_Anomaly'],  # actual days anomaly
             'breakup_date': row['Breakup_Date']  # assuming this column exists in your CSV
         }
-    
+
     return results
