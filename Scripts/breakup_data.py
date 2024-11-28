@@ -5,7 +5,7 @@ from statistics import mean
 from typing import Dict, Any
 from datetime import timedelta
 
-def normalize_value(value, mean, std):
+def NormalizeValue(value, mean, std):
     """
     Normalize a value using standardization (z-score method).
     
@@ -26,7 +26,7 @@ from datetime import datetime
 from statistics import mean
 from typing import Dict, Any
 
-def calculate_estimated_breakup(breakup_anomaly_data: Dict[int, Dict[str, Any]]) -> datetime:
+def CalculateEstimatedBreakup(breakup_anomaly_data: Dict[int, Dict[str, Any]]) -> datetime:
     """
     Calculate a single value of estimated breakup date for this site by taking the mean across all years.
     
@@ -104,7 +104,7 @@ def CalculateBreakupData(years_of_data, ice_data_filepath, site_name):
         year = int(row['Year'])
         
         # Normalize breakup anomaly using site-specific standardization
-        zscore_index = normalize_value(row['Breakup_Anomaly'],
+        zscore_index = NormalizeValue(row['Breakup_Anomaly'],
                                      site_breakup_mean, 
                                      site_breakup_std)
         
@@ -114,5 +114,5 @@ def CalculateBreakupData(years_of_data, ice_data_filepath, site_name):
             'anomaly_days': row['Breakup_Anomaly'],  # actual days anomaly
             'breakup_date': row['Breakup_Date']  # assuming this column exists in your CSV
         }
-    
+
     return results
