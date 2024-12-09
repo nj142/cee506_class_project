@@ -6,29 +6,23 @@ import matplotlib.pyplot as plt
 
 def parse_indices(file_path):
     """
-    Parse AO or ENSO index data from a tabular file.
-    Handles rows with inconsistent columns by padding or truncating to 12 fields.
+    Parse AO or ENSO index data from a tabular file with fixed columns for months.
     """
     try:
-        # Read the file while handling inconsistent rows
+        # Read the file assuming tabular format with space-separated values
         df = pd.read_csv(
             file_path,
-            sep=r'\s+',  # Handle variable whitespace
-            index_col=0,  # Use the first column as the index
-            header=None,  # No header row in the file
-            on_bad_lines='skip',  # Skip problematic rows
-            engine="python"  # Use the Python engine for more flexibility
+            delim_whitespace=True,  # Handle space-separated values
+            index_col=0,  # Use the first column (Year) as the index
+            header=0  # Assume the header row is present
         )
 
-        # Pad rows with missing fields to ensure exactly 12 columns
-        while len(df.columns) < 12:
-            df[len(df.columns) + 1] = float('nan')  # Add NaN for missing columns
+        # Ensure the columns match the 12 months
+        if len(df.columns) != 12:
+            raise ValueError(f"Expected 12 columns for months, but got {len(df.columns)}.")
 
-        # Truncate rows with more than 12 fields
-        df = df.iloc[:, :12]
-
-        # Assign month numbers (1-12) as column names
-        df.columns = range(1, 13)
+        # Rename columns to represent months
+        df.columns = range(1, 13)  # 1 for Jan, 2 for Feb, ..., 12 for Dec
         return df
 
     except Exception as e:
