@@ -3,19 +3,19 @@ import re
 from datetime import datetime, timedelta
 import calendar
 
-def ReturnENSOFetch(enso_data_filepath, estimated_breakup_date):
+def return_ENSO_fetch(enso_data_filepath, breakup_anomaly_data, estimated_breakup_doy):
     """
     Fetch ENSO data for 12 months prior to the estimated breakup date (excluding the breakup month)
     
     Args:
         enso_data_filepath (str): Path to the RTF file containing ENSO data
-        estimated_breakup_date (datetime): The estimated breakup date
+        breakup_anomaly_data (dict): Dictionary with years as keys and breakup anomaly data (e.g., zscore, anomaly_days, breakup_date)
+        estimated_breakup_doy (int): The estimated breakup day of year (DOY)
     
     Returns:
-        dict: Dictionary with datetime keys and lists of dictionaries containing:
+        dict: Dictionary with years as keys and lists of dictionaries containing:
             - month_name (str): Full month name (e.g., "February")
-            - month_value (float): ENSO index value
-        The list is ordered chronologically from 12 months prior to 1 month prior to breakup
+            - month_value (float): ENSO index value for that month
     """
     # Open the file
     with open(enso_data_filepath, 'r', encoding='utf-8') as rtf_file:
@@ -27,52 +27,38 @@ def ReturnENSOFetch(enso_data_filepath, estimated_breakup_date):
     # Convert data to a dictionary with years as keys and lists of monthly values
     data_dict = {int(year): list(map(float, months.split())) for year, months in data}
     
-    # Create the ENSO index dictionary
-    ENSO_index = {}
+    # Dictionary to store ENSO data for each year
+    enso_data_dict = {}
     
-    # Calculate the start date for collecting 12 months of data
-    start_date = estimated_breakup_date.replace(day=1) - timedelta(days=1)  # Go to last day of previous month
-    start_date = start_date.replace(day=1) - timedelta(days=1)  # Go to last day of month before that
-    start_date = start_date.replace(day=1)  # Go to first day of that month
-    start_date = start_date - timedelta(days=(11 * 30))  # Go back 11 more months
-    
-    # Initialize list to store ENSO values with month information
-    enso_data = []
-    
-    # Current date for iteration
-    current_date = start_date
-    
-    # Collect 12 months of data
-    while len(enso_data) < 12:
-        year = current_date.year
-        month = current_date.month
+    # Iterate over each year in the breakup anomaly data
+    for year, breakup_data in breakup_anomaly_data.items():
+        # Extract estimated breakup month and year (DOY gives the day of year, need to convert to month)
+        breakup_date = datetime(year, 1, 1) + timedelta(days=estimated_breakup_doy - 1)
+        breakup_month = breakup_date.month
         
-        try:
-            # Try to get the index value from the parsed data
-            monthly_data = data_dict.get(year, [])
-            if month <= len(monthly_data):
-                value = monthly_data[month - 1]
-                month_info = {
+        # List to store ENSO data for the 12 months prior to breakup
+        enso_data = []
+        
+        # Start date is 12 months prior to breakup month (excluding breakup month itself)
+        current_date = breakup_date.replace(month=breakup_month - 1 if breakup_month > 1 else 12, day=1)
+        
+        # Collect 12 months of ENSO data
+        for _ in range(12):
+            year = current_date.year
+            month = current_date.month
+            
+            # Ensure we don't go out of bounds for the month data
+            if year in data_dict and 1 <= month <= len(data_dict[year]):
+                month_value = data_dict[year][month - 1]
+                enso_data.append({
                     'month_name': calendar.month_name[month],
-                    'month_value': value
-                }
-                enso_data.append(month_info)
-        except (IndexError, TypeError):
-            # If no data is available, still include the month info with None value
-            month_info = {
-                'month_name': calendar.month_name[month],
-                'month_value': None
-            }
-            enso_data.append(month_info)
+                    'month_value': month_value
+                })
+            
+            # Move to the previous month
+            current_date = current_date.replace(month=month - 1 if month > 1 else 12)
         
-        # Move to next month
-        if month == 12:
-            current_date = current_date.replace(year=year + 1, month=1)
-        else:
-            current_date = current_date.replace(month=month + 1)
+        # Store the ENSO data for this year in the dictionary
+        enso_data_dict[year] = enso_data
     
-    # Store the values with the end date (month before breakup)
-    end_date = estimated_breakup_date.replace(day=1) - timedelta(days=1)
-    ENSO_index[end_date] = enso_data
-    
-    return ENSO_index
+    return enso_data_dict
