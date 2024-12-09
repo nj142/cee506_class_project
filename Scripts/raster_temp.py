@@ -1,87 +1,101 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[192]:
-
-
-#Example
-import datetime
-
-bounding_box = {'max_lat':65, 'min_lat':60, 'max_lon':-167, 'min_lon':-172}
-
-estimated_breakup_date = datetime.datetime(2000, 3, 15)
-
-
-# In[197]:
-
-
 import xarray as xr
 import datetime
 
-def mean_30d_raster_temps(bounding_box,estimated_breakup_date):
-    start_date = estimated_breakup_date - datetime.timedelta(days=30) #30 days or 31 days in total?
-    end_date = estimated_breakup_date
+def mean_30d_raster_temps(bounding_box, breakup_anomaly_data, estimated_breakup_doy):
+    """
+    Calculate mean temperature for a 30-day period before breakup for each year in breakup data.
+    
+    Parameters:
+    bounding_box (dict): Dictionary containing min and max latitude and longitude
+    breakup_anomaly_data (dict): Dictionary containing breakup anomaly information for different years
+    estimated_breakup_doy (int): Estimated Day of Year for breakup
+    
+    Returns:
+    dict: Dictionary of mean temperatures for each year
+    """
+    # Validate inputs
+    if not breakup_anomaly_data:
+        raise ValueError("No breakup anomaly data provided")
 
-    fp = f'/home/jovyan/work/ESDA_hk339/Project/daily_temps.nc'
+    # Initialize results dictionary
+    mean_temperatures = {}
+    
+    # Open the dataset once to improve performance
+    fp = '../Data/daily_temps.nc'
     ds = xr.open_dataset(fp)
     
-    #ds.load()
-
-    temp = ds['TMP_DAILY'] - 273.15#.values
-    temp_30d = temp.sel(time=slice(start_date, end_date))
+    # Convert temperature to Celsius
+    temp = ds['TMP_DAILY'] - 273.15
     
-    min_lon = bounding_box['min_lon'] + 360
-    max_lon = bounding_box['max_lon'] + 360
+    # Process each year in the breakup data
+    for year, breakup_info in breakup_anomaly_data.items():
+        # Use the estimated breakup DOY
+        breakup_doy = estimated_breakup_doy
+        
+        # Create the breakup date
+        breakup_date = datetime.datetime(year, 1, 1) + datetime.timedelta(days=breakup_doy - 1)
+        
+        # Define 30-day period before breakup
+        start_date = breakup_date - datetime.timedelta(days=30)
+        end_date = breakup_date
+        
+        # Select temperature data for the 30-day period
+        temp_30d = temp.sel(time=slice(start_date, end_date))
+        
+        # Convert longitude to 0-360 range
+        min_lon = bounding_box['min_lon'] + 360
+        max_lon = bounding_box['max_lon'] + 360
+        
+        # Select temperature data within the bounding box
+        temp_bbox = temp_30d.sel(
+            lat=slice(bounding_box['max_lat'], bounding_box['min_lat']),  # Latitudes go from max to min
+            lon=slice(min_lon, max_lon)
+        )
+        
+        # Calculate mean temperature
+        try:
+            mean_30d_temp = temp_bbox.mean().item()
+            mean_temperatures[year] = {
+                'mean_temp': mean_30d_temp,
+                'breakup_doy': breakup_doy,
+                'breakup_date': breakup_date
+            }
+        except Exception as e:
+            print(f"Could not calculate mean temperature for {year}: {e}")
     
-    temp_bbox = temp_30d.sel(
-        lat=slice(bounding_box['max_lat'], bounding_box['min_lat']),  #Latitudes go from max to min
-        lon=slice(min_lon, max_lon)
-    )
+    # Close the dataset
+    ds.close()
     
-    mean_30d_temp = temp_bbox.mean().item()
+    return mean_temperatures
+
+def calculate_monthly_temperature(bounding_box):
+    """
+    Calculate monthly temperature for a given bounding box.
     
-    return mean_30d_temp
-
-
-# In[198]:
-
-
-mean_30d_temp = mean_30d_raster_temps(bounding_box,estimated_breakup_date)
-print(mean_30d_temp)
-
-
-# In[205]:
-
-
-def monthly_raster_temps(bounding_box):
-    fp = f'/home/jovyan/work/ESDA_hk339/Project/monthly_temps.nc'
+    Parameters:
+    bounding_box (dict): Dictionary containing min and max latitude and longitude
+    
+    Returns:
+    xarray.DataArray: Monthly temperature data
+    """
+    fp = '../Data/monthly_temps.nc'
     ds = xr.open_dataset(fp)
     
     ds.load()
     
-    temp = ds['TMP_DAILY']-273.15
-    lat = ds['lat']#.values
-    lon = ds['lon']#.values
-    time = ds['time']#.values
-      
+    # Convert temperature to Celsius
+    temp = ds['TMP_DAILY'] - 273.15
+    lat = ds['lat']
+    lon = ds['lon']
+    
+    # Create conditions for latitude and longitude
     lat_condition = (lat >= bounding_box['min_lat']) & (lat <= bounding_box['max_lat'])
-    lon_condition = (lon >= bounding_box['min_lon']+360) & (lon <= bounding_box['max_lon']+360) #Convert lon to 0-360
-
+    lon_condition = (lon >= bounding_box['min_lon']+360) & (lon <= bounding_box['max_lon']+360)  # Convert lon to 0-360
+    
+    # Extract temperature data within the bounding box
     extracted_temp = temp.sel(lat=lat[lat_condition], lon=lon[lon_condition])
     
+    # Calculate monthly mean temperature
     monthly_temp = extracted_temp.mean(dim=('lat', 'lon'))
     
     return monthly_temp
-
-
-# In[206]:
-
-
-monthly_temp = monthly_raster_temps(bounding_box)
-
-
-# In[ ]:
-
-
-
-
