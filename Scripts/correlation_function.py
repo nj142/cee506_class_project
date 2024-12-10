@@ -4,8 +4,7 @@ import matplotlib.pyplot as plt
 from scipy.stats import pearsonr
 import os
 
-
-def calculate_ao_correlation_per_month(ao_indices, mean_30d_raster_temps, community_names, years):
+def calculate_ao_correlation_per_month(ao_indices, community_raster, years):
     """
     Calculate Pearson correlation between AO indices and mean 30-day raster temperatures per month for each community.
 
@@ -19,32 +18,24 @@ def calculate_ao_correlation_per_month(ao_indices, mean_30d_raster_temps, commun
         DataFrame: DataFrame containing community, year, month, correlation coefficient, and p-value.
     """
     results = []
-
-    for community in community_names:
-        if community not in mean_30d_raster_temps:
-            print(f"Warning: Community {community} missing in raster data.")
+    for year in years:
+        if year not in community_raster:
             continue
 
-        community_raster = mean_30d_raster_temps[community]
-        for year in years:
-            if year not in community_raster or year not in ao_indices.index:
-                continue
-
-            avg_temp = np.mean(community_raster[year])
-            for month, ao_value in ao_indices.loc[year].items():
-                correlation, p_value = pearsonr([avg_temp], [ao_value]) if not np.isnan(avg_temp) else (np.nan, np.nan)
-                results.append({
-                    "Community": community,
-                    "Year": year,
-                    "Month": month,
-                    "Correlation": correlation,
-                    "P-Value": p_value
-                })
+        avg_temp = np.mean(community_raster[year])
+        for month, ao_value in ao_indices.loc[year].items():
+            correlation, p_value = pearsonr([avg_temp], [ao_value]) if not np.isnan(avg_temp) else (np.nan, np.nan)
+            results.append({
+                "Year": year,
+                "Month": month,
+                "Correlation": correlation,
+                "P-Value": p_value
+            })
 
     return pd.DataFrame(results)
 
 
-def calculate_enso_correlation_per_month(enso_indices, mean_30d_raster_temps, community_names, years):
+def calculate_enso_correlation_per_month(enso_indices, community_raster, years):
     """
     Calculate Pearson correlation between ENSO indices and mean 30-day raster temperatures per month for each community.
 
@@ -58,27 +49,19 @@ def calculate_enso_correlation_per_month(enso_indices, mean_30d_raster_temps, co
         DataFrame: DataFrame containing community, year, month, correlation coefficient, and p-value.
     """
     results = []
-
-    for community in community_names:
-        if community not in mean_30d_raster_temps:
-            print(f"Warning: Community {community} missing in raster data.")
+    for year in years:
+        if year not in community_raster:
             continue
 
-        community_raster = mean_30d_raster_temps[community]
-        for year in years:
-            if year not in community_raster or year not in enso_indices.index:
-                continue
-
-            avg_temp = np.mean(community_raster[year])
-            for month, enso_value in enso_indices.loc[year].items():
-                correlation, p_value = pearsonr([avg_temp], [enso_value]) if not np.isnan(avg_temp) else (np.nan, np.nan)
-                results.append({
-                    "Community": community,
-                    "Year": year,
-                    "Month": month,
-                    "Correlation": correlation,
-                    "P-Value": p_value
-                })
+        avg_temp = np.mean(community_raster[year])
+        for month, enso_value in enso_indices.loc[year].items():
+            correlation, p_value = pearsonr([avg_temp], [enso_value]) if not np.isnan(avg_temp) else (np.nan, np.nan)
+            results.append({
+                "Year": year,
+                "Month": month,
+                "Correlation": correlation,
+                "P-Value": p_value
+            })
 
     return pd.DataFrame(results)
 
