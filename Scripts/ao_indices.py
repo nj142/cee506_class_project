@@ -25,32 +25,48 @@ def return_AO_fetch(ao_data_filepath, breakup_anomaly_data, estimated_breakup_do
         ao_data_dict = {}
 
         # Iterate over each year in the breakup anomaly data
-        for year in breakup_anomaly_data.keys():
+        for year in breakup_anomaly_data:
+            if year == 2000:
+                continue
             # Determine the breakup month
             breakup_date = datetime(year, 1, 1) + timedelta(days=estimated_breakup_doy - 1)
             breakup_month = breakup_date.month
+            current_date = breakup_date.replace(year=year - 1)
+            
+            year = current_date.year
+            month = current_date.month
 
-            # List to store AO data for the 12 months prior to breakup
             ao_month_data = []
 
-            for offset in range(1, 13):  # Iterate over the previous 12 months
-                target_month = (breakup_month - offset - 1) % 12 + 1
-                target_year = year if breakup_month - offset > 0 else year - 1
+            for _ in range(13):  # Iterate over the previous 12 months
+                if year in breakup_anomaly_data and 1 <= month <= 12:
+                    # Fetch the data using month abbreviation
+                    month_name = calendar.month_name[month]
+                    try:
+                        month_value = df.loc[year, calendar.month_abbr[month]]
+                    except KeyError:
+                        continue  # Handle missing data
 
-                # Fetch the data using month abbreviation
-                month_name = calendar.month_name[target_month]
-                try:
-                    month_value = df.loc[target_year, calendar.month_abbr[target_month]]
-                except KeyError:
-                    month_value = None  # Handle missing data
-
-                ao_month_data.append({
-                    'month_name': month_name,
-                    'month_value': month_value
-                })
+                    ao_month_data.append({
+                        'month_name': month_name,
+                        'month_value': month_value
+                    })
+                    
+                else:
+                    year += 1
+                    month = 1
+                    month_value = df.loc[year, calendar.month_abbr[month]]
+                    ao_month_data.append({
+                        'month_name': month_name,
+                        'month_value': month_value
+                    })
+                
+                month += 1
 
             # Store in the dictionary
             ao_data_dict[year] = ao_month_data
+            #print(ao_data_dict)
+            
 
         return ao_data_dict
 
