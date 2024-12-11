@@ -27,38 +27,63 @@ def return_ENSO_fetch(enso_data_filepath, breakup_anomaly_data, estimated_breaku
     # Convert data to a dictionary with years as keys and lists of monthly values
     data_dict = {int(year): list(map(float, months.split())) for year, months in data}
     
+    date_value_dict = {}
+
+    for year, values in data_dict.items():
+        for month, value in enumerate(values, start=1):
+            date_value_dict[datetime(year, month, 1)] = value
+
+    # Check the result
+    #print(date_value_dict)
+    
     # Dictionary to store ENSO data for each year
     enso_data_dict = {}
     
     # Iterate over each year in the breakup anomaly data
-    for year, breakup_data in breakup_anomaly_data.items():
-        # Extract estimated breakup month and year (DOY gives the day of year, need to convert to month)
-        breakup_date = datetime(year, 1, 1) + timedelta(days=estimated_breakup_doy - 1)
+    for year in breakup_anomaly_data:
+        if year == 2000:
+            continue
+        
+        # Use the estimated breakup DOY
+        breakup_doy = estimated_breakup_doy
+        
+        # Create the breakup date
+        breakup_date = datetime(year, 1, 1) + timedelta(days=breakup_doy - 1)
+        #breakup_year = breakup_date.year
         breakup_month = breakup_date.month
         
         # List to store ENSO data for the 12 months prior to breakup
         enso_data = []
         
-        # Start date is 12 months prior to breakup month (excluding breakup month itself)
-        current_date = breakup_date.replace(month=breakup_month - 1 if breakup_month > 1 else 12, day=1)
+        current_date = breakup_date.replace(year=year - 1)
+        year = current_date.year
+        month = current_date.month
         
-        # Collect 12 months of ENSO data
-        for _ in range(12):
-            year = current_date.year
-            month = current_date.month
+        for _ in range(13):
             
-            # Ensure we don't go out of bounds for the month data
-            if year in data_dict and 1 <= month <= len(data_dict[year]):
-                month_value = data_dict[year][month - 1]
+            if year in breakup_anomaly_data and 1 <= month <= 12:
+                try:
+                    month_value = date_value_dict[datetime(year, month, 1)]
+                except KeyError:
+                    continue
                 enso_data.append({
                     'month_name': calendar.month_name[month],
                     'month_value': month_value
                 })
-            
-            # Move to the previous month
-            current_date = current_date.replace(month=month - 1 if month > 1 else 12)
+                
+            else:
+                year += 1
+                month = 1
+                month_value = date_value_dict[datetime(year, month, 1)]
+                enso_data.append({
+                    'month_name': calendar.month_name[month],
+                    'month_value': month_value
+                })
+                
+            month += 1
         
         # Store the ENSO data for this year in the dictionary
         enso_data_dict[year] = enso_data
+    #print(enso_data_dict)
     
     return enso_data_dict
