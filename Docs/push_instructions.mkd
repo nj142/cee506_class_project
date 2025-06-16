@@ -1,4 +1,4 @@
-# Introduction to Git
+# Introduction to Git for Shared Projects
 
 The most confusing thing for me was learning the different mechanics of pushing and pulling between **Remote** and **Local** branches in the command line. 
 
